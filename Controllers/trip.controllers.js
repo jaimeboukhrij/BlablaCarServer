@@ -3,7 +3,7 @@ const Trip = require("../models/Trip.model")
 
 const saveTrip = (req, res, next) => {
 
-    const { origin, originId, destination, destinationId, hourDeparture, date, price, passengers, duration, hourArrival } = req.body
+    const { origin, originId, destination, destinationId, hourDeparture, date, price, passengers, duration, hourArrival, pets, smoke } = req.body
     const { _id } = req.payload
 
     console.log("--------", req.body)
@@ -21,7 +21,8 @@ const saveTrip = (req, res, next) => {
     Trip
         .create({
             origin: newOrigin, destination: newDestination, date: date, hourDeparture: hourDeparture,
-            price: price, passengers: passengers, duration: duration, hourArrival: hourArrival, owner: _id
+            price: price, passengers: passengers, duration: duration, hourArrival: hourArrival, owner: _id,
+            pets: pets, smoke: smoke
         })
         .then((respon) => res.json(respon))
         .catch(next)
@@ -37,6 +38,22 @@ const getTrip = (req, res, next) => {
         .catch(next);
 }
 
+const getOneTrip = (req, res, next) => {
+
+    const { idTrip } = req.params
+
+    Trip
+        .findById(idTrip)
+        .then(respond => res.json(respond))
+        .catch(next)
+
+}
+
+
+const tripRequest = (req, res, next) => {
+    console.log("-------", req.params)
+
+}
 
 
 
@@ -44,4 +61,5 @@ const getTrip = (req, res, next) => {
 
 
 
-module.exports = { saveTrip, getTrip }
+
+module.exports = { saveTrip, getTrip, getOneTrip, tripRequest }

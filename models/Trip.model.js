@@ -43,9 +43,21 @@ const userSchema = new Schema(
       type: String,
       required: true
     },
+    pets: {
+      type: Boolean,
+      required: true
+    },
+    smoke: {
+      type: Boolean,
+      required: true
+    },
     owner: {
       type: Schema.Types.ObjectId,
       required: true
+    },
+
+    request: {
+      type: [Schema.Types.ObjectId]
     }
 
 
