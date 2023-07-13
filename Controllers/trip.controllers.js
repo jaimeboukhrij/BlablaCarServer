@@ -1,4 +1,5 @@
 const Trip = require("../models/Trip.model")
+const mongoose = require('mongoose');
 
 
 const saveTrip = (req, res, next) => {
@@ -51,7 +52,70 @@ const getOneTrip = (req, res, next) => {
 
 
 const tripRequest = (req, res, next) => {
-    console.log("-------", req.params)
+
+    const { idUser, idTrip } = req.body
+    let newData
+
+    Trip
+        .findById(idTrip)
+        .then(data => {
+            if (data.request.includes(idUser)) {
+                newData = data.request.filter(elem => elem != idUser)
+            }
+            else {
+                data.request.push(idUser)
+                newData = data.request
+            }
+
+            Trip
+                .findByIdAndUpdate(idTrip, { "request": newData })
+                .then(respondo => res.json("update"))
+                .catch(next)
+
+        })
+        .catch(next)
+
+}
+
+const tripPassengers = (req, res, next) => {
+
+    const { idUser, idTrip } = req.body
+    let newData
+
+    Trip
+        .findById(idTrip)
+        .then(data => {
+            if (!data.passengers.includes(idUser)) {
+                newDataRequest = data.request.filter(elem => elem != idUser)
+                data.passengers.push(idUser)
+                newDataPassengers = data.passengers
+            }
+
+            Trip
+                .findByIdAndUpdate(idTrip, { "request": newDataRequest, "passengersIds": newDataPassengers })
+                .then(respondo => res.json("update"))
+                .catch(next)
+
+        })
+        .catch(next)
+
+}
+
+
+
+const getOwnerTrips = (req, res, next) => {
+
+    const { idUser } = req.params
+
+    console.log("en servidor")
+
+    Trip
+        .find({ "owner": idUser })
+        .populate("request")
+        .exec()
+        .then(data => res.json(data))
+        .catch(next);
+
 
 }
 
@@ -61,5 +125,4 @@ const tripRequest = (req, res, next) => {
 
 
 
-
-module.exports = { saveTrip, getTrip, getOneTrip, tripRequest }
+module.exports = { saveTrip, getTrip, getOneTrip, tripRequest, getOwnerTrips, tripPassengers }

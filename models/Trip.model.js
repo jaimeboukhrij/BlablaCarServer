@@ -56,13 +56,20 @@ const userSchema = new Schema(
       required: true
     },
 
-    request: {
-      type: [Schema.Types.ObjectId]
-    }
-
-
-
+    request: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User"
+      }
+    ],
+    passengersIds: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User"
+      }
+    ],
   },
+
   {
     timestamps: true
   }
