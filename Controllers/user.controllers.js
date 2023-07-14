@@ -8,7 +8,6 @@ const getUser = (req, res, next) => {
     User
         .findById(idUser)
         .then(respond => {
-            console.log(".....", respond)
             res.json(respond)
         })
         .catch(next)

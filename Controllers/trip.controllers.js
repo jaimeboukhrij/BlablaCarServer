@@ -7,8 +7,6 @@ const saveTrip = (req, res, next) => {
     const { origin, originId, destination, destinationId, hourDeparture, date, price, passengers, duration, hourArrival, pets, smoke } = req.body
     const { _id } = req.payload
 
-    console.log("--------", req.body)
-
     const newOrigin = {
         name: origin,
         id: originId
@@ -31,11 +29,14 @@ const saveTrip = (req, res, next) => {
 
 
 const getTrip = (req, res, next) => {
-    const { originId, destinationId, date: date } = req.params;
+    const { originId, destinationId, date: date, passengers: searchPassengers } = req.params;
 
 
     Trip.find({ "origin.id": originId, "destination.id": destinationId, "date": date })
-        .then(response => { res.json(response) })
+        .then(response => {
+            const NewData = response.filter((elem) => searchPassengers <= (elem.passengers - elem.passengersIds.length))
+            res.json(NewData)
+        })
         .catch(next);
 }
 
@@ -45,6 +46,9 @@ const getOneTrip = (req, res, next) => {
 
     Trip
         .findById(idTrip)
+        .populate("passengersIds")
+        .populate("owner")
+        .exec()
         .then(respond => res.json(respond))
         .catch(next)
 
@@ -80,15 +84,14 @@ const tripRequest = (req, res, next) => {
 const tripPassengers = (req, res, next) => {
 
     const { idUser, idTrip } = req.body
-    let newData
 
     Trip
         .findById(idTrip)
         .then(data => {
-            if (!data.passengers.includes(idUser)) {
+            if (!data.passengersIds.includes(idUser)) {
                 newDataRequest = data.request.filter(elem => elem != idUser)
-                data.passengers.push(idUser)
-                newDataPassengers = data.passengers
+                data.passengersIds.push(idUser)
+                newDataPassengers = data.passengersIds
             }
 
             Trip
@@ -102,12 +105,9 @@ const tripPassengers = (req, res, next) => {
 }
 
 
-
 const getOwnerTrips = (req, res, next) => {
 
     const { idUser } = req.params
-
-    console.log("en servidor")
 
     Trip
         .find({ "owner": idUser })
@@ -115,6 +115,37 @@ const getOwnerTrips = (req, res, next) => {
         .exec()
         .then(data => res.json(data))
         .catch(next);
+
+}
+
+const userTrips = (req, res, next) => {
+
+    const { idUser } = req.params
+
+    const newData = {
+        userDriver: [],
+        userPassenger: []
+    }
+
+    Trip
+        .find()
+        .populate("owner")
+        .exec()
+        .then((data) => {
+            data.map((elem) => {
+                if (elem.owner._id == idUser) {
+                    newData.userDriver.push(elem)
+                }
+                if (elem.passengersIds.includes(idUser)) {
+                    newData.userPassenger.push(elem)
+                }
+
+            })
+
+            res.json(newData)
+        })
+        .catch(next)
+
 
 
 }
@@ -124,5 +155,4 @@ const getOwnerTrips = (req, res, next) => {
 
 
 
-
-module.exports = { saveTrip, getTrip, getOneTrip, tripRequest, getOwnerTrips, tripPassengers }
+module.exports = { saveTrip, getTrip, getOneTrip, tripRequest, getOwnerTrips, tripPassengers, userTrips }
