@@ -13,6 +13,24 @@ const getUser = (req, res, next) => {
         .catch(next)
 }
 
+const editUSerpersonalData = (req, res, next) => {
+
+    const { talk, music, smoke, pets } = req.body
+    const { _id: idUser } = req.payload
+
+    const personalData = {
+        talk: talk,
+        music: music,
+        smoke: smoke,
+        pets, pets
+    }
+
+    User
+        .findByIdAndUpdate(idUser, { personalData })
+        .then(respond => res.json(respond))
+        .catch(next)
+}
 
 
-module.exports = { getUser }
+
+module.exports = { getUser, editUSerpersonalData }

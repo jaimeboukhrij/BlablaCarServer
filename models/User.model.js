@@ -46,6 +46,12 @@ const userSchema = new Schema(
       type: Date,
       required: [true, 'La fecha de nacimiento es obligatoria.'],
     },
+    personalData: {
+      talk: Number,
+      music: Number,
+      smoke: Number,
+      pets: Number
+    }
 
   },
   {
