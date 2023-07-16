@@ -51,9 +51,11 @@ const userSchema = new Schema(
       music: Number,
       smoke: Number,
       pets: Number
-    }
+    },
 
   },
+
+
   {
     timestamps: true
   }

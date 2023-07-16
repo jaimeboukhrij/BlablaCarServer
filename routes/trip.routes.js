@@ -1,5 +1,5 @@
 const { saveTrip, getTrip, getOneTrip, tripRequest, getOwnerTrips,
-    tripPassengers, userTrips
+    tripPassengers, userTrips, saveReviews, getUserReview
 } = require("../controllers/trip.controllers")
 const { isAuthenticated } = require("../middlewares/verifyToken.middleware")
 
@@ -13,6 +13,8 @@ router.post("/", isAuthenticated, saveTrip)
 router.put("/tripRequest", isAuthenticated, tripRequest)
 router.put("/passengers", isAuthenticated, tripPassengers)
 router.get("/userTrips/:idUser", isAuthenticated, userTrips)
+router.put("/reviews", isAuthenticated, saveReviews)
+router.get("/userReviews/:idUser", isAuthenticated, getUserReview)
 
 
 

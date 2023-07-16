@@ -68,6 +68,18 @@ const userSchema = new Schema(
         ref: "User"
       }
     ],
+    reviews: [{
+      score: Number,
+      text: String,
+      owner: {
+        type: Schema.Types.ObjectId,
+        ref: "User"
+      },
+      to: {
+        type: Schema.Types.ObjectId,
+        ref: "User"
+      },
+    }],
   },
 
   {

@@ -23,7 +23,7 @@ const saveTrip = (req, res, next) => {
             price: price, passengers: passengers, duration: duration, hourArrival: hourArrival, owner: _id,
             pets: pets, smoke: smoke
         })
-        .then((respon) => res.json(respon))
+        .then((respon) => res.zzz(respon))
         .catch(next)
 }
 
@@ -145,9 +145,44 @@ const userTrips = (req, res, next) => {
             res.json(newData)
         })
         .catch(next)
+}
 
 
+const saveReviews = (req, res, next) => {
 
+    const { inf, id } = req.body
+
+    console.log("servidor")
+
+    Trip
+        .findOne({ _id: id })
+        .then(respond => {
+            respond.reviews.push(inf)
+            const newData = respond.reviews
+            Trip.findByIdAndUpdate(id, { "reviews": newData }).then((respo) => res.json(respo)).catch(next)
+        })
+        .catch(next)
+
+}
+
+const getUserReview = (req, res, next) => {
+
+    const { idUser } = req.params
+
+    Trip
+        .find()
+        .then(respond => {
+            const AllReviews = respond.map(elem => elem.reviews)
+            const data = AllReviews.filter(elem => elem.some((obj) => obj.to == idUser))
+            const AllReviews2 = []
+
+            data.map((elem) => { elem.map((elem2) => { AllReviews2.push(elem2) }) })
+
+            const finalData = AllReviews2.filter(elem => elem.to == idUser)
+
+            res.json(finalData)
+        })
+        .catch(next)
 }
 
 
@@ -155,4 +190,4 @@ const userTrips = (req, res, next) => {
 
 
 
-module.exports = { saveTrip, getTrip, getOneTrip, tripRequest, getOwnerTrips, tripPassengers, userTrips }
+module.exports = { saveTrip, getTrip, getOneTrip, tripRequest, getOwnerTrips, tripPassengers, userTrips, saveReviews, getUserReview }
