@@ -7,14 +7,14 @@ const router = require("express").Router()
 
 
 router.get("/:origin/:destination/:date/:originId/:destinationId/:passengers", getTrip)
-router.get("/:idTrip", isAuthenticated, getOneTrip)
+router.get("/:idTrip", getOneTrip)
 router.get("/owner/:idUser", isAuthenticated, getOwnerTrips)
 router.post("/", isAuthenticated, saveTrip)
 router.put("/tripRequest", isAuthenticated, tripRequest)
 router.put("/passengers", isAuthenticated, tripPassengers)
-router.get("/userTrips/:idUser", isAuthenticated, userTrips)
-router.put("/reviews", isAuthenticated, saveReviews)
-router.get("/userReviews/:idUser", isAuthenticated, getUserReview)
+router.get("/userTrips/:idUser", userTrips)
+router.put("/reviews", saveReviews)
+router.get("/userReviews/:idUser", getUserReview)
 
 
 

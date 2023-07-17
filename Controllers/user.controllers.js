@@ -32,5 +32,16 @@ const editUSerpersonalData = (req, res, next) => {
 }
 
 
+const editUserAvatar = (req, res, next) => {
 
-module.exports = { getUser, editUSerpersonalData }
+    const { idUser, showImage } = req.body
+    console.log("eidtando", req.body)
+
+    User
+        .findByIdAndUpdate(idUser, { avatar: showImage })
+        .then(respond => res.json(respond))
+        .catch(next)
+}
+
+
+module.exports = { getUser, editUSerpersonalData, editUserAvatar }

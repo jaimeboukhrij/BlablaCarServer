@@ -23,7 +23,7 @@ const saveTrip = (req, res, next) => {
             price: price, passengers: passengers, duration: duration, hourArrival: hourArrival, owner: _id,
             pets: pets, smoke: smoke
         })
-        .then((respon) => res.zzz(respon))
+        .then((respon) => res.json(respon))
         .catch(next)
 }
 
@@ -168,6 +168,7 @@ const saveReviews = (req, res, next) => {
 const getUserReview = (req, res, next) => {
 
     const { idUser } = req.params
+    console.log("-----", idUser)
 
     Trip
         .find()

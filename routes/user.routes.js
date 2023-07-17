@@ -1,11 +1,12 @@
-const { getUser, editUSerpersonalData } = require("../controllers/user.controllers")
+const { getUser, editUSerpersonalData, editUserAvatar } = require("../controllers/user.controllers")
 const { isAuthenticated } = require("../middlewares/verifyToken.middleware")
 
 const router = require("express").Router()
 
 
-router.get("/:idUser", isAuthenticated, getUser)
+router.get("/:idUser", getUser)
 router.put("/editUSerpersonalData", isAuthenticated, editUSerpersonalData)
+router.put("/editUserAvatar", isAuthenticated, editUserAvatar)
 
 
 
